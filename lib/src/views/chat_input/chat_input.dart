@@ -34,6 +34,9 @@ class ChatInput extends StatefulWidget {
   ///
   /// [onCancelMessage] and [onCancelStt] are optional callbacks for cancelling
   /// message submission or speech-to-text translation respectively.
+  ///
+  /// [autofocus] determines whether the input field should automatically focus
+  /// when the chat input is created. Defaults to true.
   const ChatInput({
     required this.onSendMessage,
     required this.onTranslateStt,
@@ -41,6 +44,7 @@ class ChatInput extends StatefulWidget {
     this.onCancelEdit,
     this.onCancelMessage,
     this.onCancelStt,
+    this.autofocus = true,
     super.key,
   }) : assert(
          !(onCancelMessage != null && onCancelStt != null),
@@ -64,6 +68,11 @@ class ChatInput extends StatefulWidget {
 
   /// The initial message to populate the input field, if any.
   final ChatMessage? initialMessage;
+
+  /// Whether the input field should automatically focus when the chat input is created.
+  ///
+  /// Defaults to true.
+  final bool autofocus;
 
   /// Optional callback function to cancel an ongoing edit of a message, passed
   /// via [initialMessage], that has already received a response. To allow for a
@@ -194,7 +203,7 @@ class _ChatInputState extends State<ChatInput> {
                                                     minLines: 1,
                                                     maxLines: 1024,
                                                     controller: _textController,
-                                                    autofocus: true,
+                                                    autofocus: widget.autofocus,
                                                     focusNode: _focusNode,
                                                     textInputAction:
                                                         isMobile

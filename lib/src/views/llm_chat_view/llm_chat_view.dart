@@ -75,6 +75,8 @@ class LlmChatView extends StatefulWidget {
   ///   a chat operation. Defaults to 'CANCEL'.
   /// - [errorMessage]: Optional. The message to display when an error occurs
   ///   during a chat operation. Defaults to 'ERROR'.
+  /// - [autofocus]: Optional. Whether the input field should automatically focus when the chat view is created.
+  ///   Defaults to true.
   LlmChatView({
     required LlmProvider provider,
     LlmChatViewStyle? style,
@@ -86,6 +88,7 @@ class LlmChatView extends StatefulWidget {
     this.onErrorCallback,
     this.cancelMessage = 'CANCEL',
     this.errorMessage = 'ERROR',
+    this.autofocus = true,
     super.key,
   }) : viewModel = ChatViewModel(
          provider: provider,
@@ -101,6 +104,11 @@ class LlmChatView extends StatefulWidget {
   /// when the chat history is empty. The user can select any of these
   /// suggestions to quickly start a conversation with the LLM.
   final List<String> suggestions;
+
+  /// Whether the input field should automatically focus when the chat view is created.
+  ///
+  /// Defaults to true.
+  final bool autofocus;
 
   /// The view model containing the chat state and configuration.
   ///
@@ -206,6 +214,7 @@ class _LlmChatViewState extends State<LlmChatView>
                     onTranslateStt: _onTranslateStt,
                     onCancelStt:
                         _pendingSttResponse == null ? null : _onCancelStt,
+                    autofocus: widget.autofocus,
                   ),
                 ],
               ),
