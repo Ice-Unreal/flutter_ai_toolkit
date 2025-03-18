@@ -19,6 +19,10 @@ class LlmMessageStyle {
     this.iconDecoration,
     this.decoration,
     this.markdownStyle,
+    this.iconSize,
+    this.iconContainerWidth,
+    this.iconContainerHeight,
+    this.messageWidthRatio,
   });
 
   /// Resolves the provided style with the default style.
@@ -47,6 +51,10 @@ class LlmMessageStyle {
       iconDecoration: style?.iconDecoration ?? defaultStyle.iconDecoration,
       markdownStyle: style?.markdownStyle ?? defaultStyle.markdownStyle,
       decoration: style?.decoration ?? defaultStyle.decoration,
+      iconSize: style?.iconSize ?? defaultStyle.iconSize,
+      iconContainerWidth: style?.iconContainerWidth ?? defaultStyle.iconContainerWidth,
+      iconContainerHeight: style?.iconContainerHeight ?? defaultStyle.iconContainerHeight,
+      messageWidthRatio: style?.messageWidthRatio ?? defaultStyle.messageWidthRatio,
     );
   }
 
@@ -57,6 +65,10 @@ class LlmMessageStyle {
   factory LlmMessageStyle._lightStyle() => LlmMessageStyle(
     icon: ToolkitIcons.spark_icon,
     iconColor: ToolkitColors.darkIcon,
+    iconSize: 12,
+    iconContainerWidth: 20,
+    iconContainerHeight: 20,
+    messageWidthRatio: 0.75,
     iconDecoration: const BoxDecoration(
       color: ToolkitColors.llmIconBackground,
       shape: BoxShape.circle,
@@ -107,4 +119,16 @@ class LlmMessageStyle {
 
   /// The markdown style sheet for LLM messages.
   final MarkdownStyleSheet? markdownStyle;
+
+  /// The size of the icon.
+  final double? iconSize;
+
+  /// The width of the icon container.
+  final double? iconContainerWidth;
+
+  /// The height of the icon container.
+  final double? iconContainerHeight;
+
+  /// The width ratio of the message container (0.0 to 1.0).
+  final double? messageWidthRatio;
 }

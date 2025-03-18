@@ -33,32 +33,33 @@ class LlmMessageView extends StatelessWidget {
   final bool isWelcomeMessage;
 
   @override
-  Widget build(BuildContext context) => Row(
-    children: [
-      Flexible(
-        flex: 6,
-        child: Column(
-          children: [
-            ChatViewModelClient(
-              builder: (context, viewModel, child) {
-                final text = message.text;
-                final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
-                final llmStyle = LlmMessageStyle.resolve(
-                  chatStyle.llmMessageStyle,
-                );
+  Widget build(BuildContext context) => ChatViewModelClient(
+    builder: (context, viewModel, child) {
+      final text = message.text;
+      final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
+      final llmStyle = LlmMessageStyle.resolve(chatStyle.llmMessageStyle);
+      final messageWidthRatio = llmStyle.messageWidthRatio ?? 0.75;
+      final messageFlex = (messageWidthRatio * 100).round();
+      final spacerFlex = 100 - messageFlex;
 
-                return Stack(
+      return Row(
+        children: [
+          Flexible(
+            flex: messageFlex,
+            child: Column(
+              children: [
+                Stack(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Container(
-                        height: 20,
-                        width: 20,
+                        height: llmStyle.iconContainerHeight ?? 20,
+                        width: llmStyle.iconContainerWidth ?? 20,
                         decoration: llmStyle.iconDecoration,
                         child: Icon(
                           llmStyle.icon,
                           color: llmStyle.iconColor,
-                          size: 12,
+                          size: llmStyle.iconSize ?? 12,
                         ),
                       ),
                     ),
@@ -98,13 +99,13 @@ class LlmMessageView extends StatelessWidget {
                       ),
                     ),
                   ],
-                );
-              },
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-      const Flexible(flex: 2, child: SizedBox()),
-    ],
+          ),
+          Flexible(flex: spacerFlex, child: const SizedBox()),
+        ],
+      );
+    },
   );
 }
