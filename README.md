@@ -1,8 +1,5 @@
-[![package:flutter_ai_toolkit](https://github.com/flutter/ai/actions/workflows/flutter.yml/badge.svg)](https://github.com/flutter/ai/actions/workflows/flutter.yml)
-[![pub package](https://img.shields.io/pub/v/flutter_ai_toolkit.svg)](https://pub.dev/packages/flutter_ai_toolkit)
-[![package publisher](https://img.shields.io/pub/publisher/flutter_ai_toolkit.svg)](https://pub.dev/packages/flutter_ai_toolkit/publisher)
 
-Hello and welcome to the [Flutter AI Toolkit][]!
+Forked from https://github.com/flutter/ai
 
 The AI Toolkit is a set of AI chat-related widgets to make it easy to
 add an AI chat window to your Flutter app.
