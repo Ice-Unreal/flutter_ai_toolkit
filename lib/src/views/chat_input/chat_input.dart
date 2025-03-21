@@ -290,7 +290,7 @@ class _ChatInputState extends State<ChatInput> {
     widget.onSendMessage(text, List.from(_attachments));
     _attachments.clear();
     _textController.clear();
-    _focusNode.requestFocus();
+    _focusNode.unfocus();
   }
 
   void onCancelPrompt() {

@@ -77,6 +77,8 @@ class LlmChatView extends StatefulWidget {
   ///   during a chat operation. Defaults to 'ERROR'.
   /// - [autofocus]: Optional. Whether the input field should automatically focus when the chat view is created.
   ///   Defaults to true.
+  /// - [aiDescription]: Optional. The description text that will be appended to each LLM message.
+  ///   Defaults to "以上输出由AI生成，仅供参考。"
   LlmChatView({
     required LlmProvider provider,
     LlmChatViewStyle? style,
@@ -89,6 +91,7 @@ class LlmChatView extends StatefulWidget {
     this.cancelMessage = 'CANCEL',
     this.errorMessage = 'ERROR',
     this.autofocus = true,
+    String aiDescription = "以上输出由AI生成，仅供参考。",
     super.key,
   }) : viewModel = ChatViewModel(
          provider: provider,
@@ -96,6 +99,7 @@ class LlmChatView extends StatefulWidget {
          messageSender: messageSender,
          style: style,
          welcomeMessage: welcomeMessage,
+         aiDescription: aiDescription,
        );
 
   /// The list of suggestions to display in the chat interface.

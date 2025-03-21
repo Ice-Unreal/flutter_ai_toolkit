@@ -100,6 +100,13 @@ class LlmMessageView extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (text != null && !isWelcomeMessage)
+                  Text(
+                    viewModel.aiDescription,
+                    style: llmStyle.markdownStyle?.p?.copyWith(
+                      fontSize: (llmStyle.markdownStyle?.p?.fontSize ?? 14) * 0.8,
+                    ) ?? const TextStyle(),
+                  ),
               ],
             ),
           ),
