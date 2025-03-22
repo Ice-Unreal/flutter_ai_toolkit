@@ -180,6 +180,7 @@ class _LlmChatViewState extends State<LlmChatView>
             viewModel: widget.viewModel,
             child: Container(
               color: chatStyle.backgroundColor,
+              width: double.infinity,
               child: Column(
                 children: [
                   Expanded(
@@ -286,10 +287,8 @@ class _LlmChatViewState extends State<LlmChatView>
 
     // use the LLM to translate the attached audio to text
     const prompt =
-        'translate the attached audio to text; provide the result of that '
-        'translation as just the text of the translation itself. be careful to '
-        'separate the background audio from the foreground audio and only '
-        'provide the result of translating the foreground audio.';
+        '将附加的音频翻译成文本；仅提供翻译结果的文本内容。请注意区分背景音频和前景音频，'
+        '只提供前景音频的翻译结果。';
     final attachments = [await FileAttachment.fromFile(file)];
 
     var response = '';

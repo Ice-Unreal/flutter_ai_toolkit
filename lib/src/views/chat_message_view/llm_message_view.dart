@@ -47,6 +47,7 @@ class LlmMessageView extends StatelessWidget {
           Flexible(
             flex: messageFlex,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
                   children: [
@@ -101,11 +102,15 @@ class LlmMessageView extends StatelessWidget {
                   ],
                 ),
                 if (text != null && !isWelcomeMessage)
-                  Text(
-                    viewModel.aiDescription,
-                    style: llmStyle.markdownStyle?.p?.copyWith(
-                      fontSize: (llmStyle.markdownStyle?.p?.fontSize ?? 14) * 0.8,
-                    ) ?? const TextStyle(),
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: Text(
+                      viewModel.aiDescription,
+                      style: llmStyle.markdownStyle?.p?.copyWith(
+                        fontSize: (llmStyle.markdownStyle?.p?.fontSize ?? 14) * 0.8,
+                      ) ?? const TextStyle(),
+                    ),
                   ),
               ],
             ),
