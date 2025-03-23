@@ -79,6 +79,8 @@ class LlmChatView extends StatefulWidget {
   ///   Defaults to true.
   /// - [aiDescription]: Optional. The description text that will be appended to each LLM message.
   ///   Defaults to "以上输出由AI生成，仅供参考。"
+  /// - [startRecording]: Optional callback function triggered when recording starts.
+  /// - [stopRecording]: Optional callback function triggered when recording stops.
   LlmChatView({
     required LlmProvider provider,
     LlmChatViewStyle? style,
@@ -92,6 +94,8 @@ class LlmChatView extends StatefulWidget {
     this.errorMessage = 'ERROR',
     this.autofocus = true,
     String aiDescription = "以上输出由AI生成，仅供参考。",
+    this.startRecording,
+    this.stopRecording,
     super.key,
   }) : viewModel = ChatViewModel(
          provider: provider,
@@ -142,6 +146,12 @@ class LlmChatView extends StatefulWidget {
   /// Defaults to 'ERROR'.
   final String errorMessage;
 
+  /// Optional callback function triggered when recording starts.
+  final Future<void> Function()? startRecording;
+
+  /// Optional callback function triggered when recording stops.
+  final Future<void> Function()? stopRecording;
+
   @override
   State<LlmChatView> createState() => _LlmChatViewState();
 }
@@ -154,7 +164,6 @@ class _LlmChatViewState extends State<LlmChatView>
   LlmResponse? _pendingPromptResponse;
   ChatMessage? _initialMessage;
   ChatMessage? _associatedResponse;
-  LlmResponse? _pendingSttResponse;
 
   @override
   void initState() {
@@ -216,10 +225,9 @@ class _LlmChatViewState extends State<LlmChatView>
                         _pendingPromptResponse == null
                             ? null
                             : _onCancelMessage,
-                    onTranslateStt: _onTranslateStt,
-                    onCancelStt:
-                        _pendingSttResponse == null ? null : _onCancelStt,
                     autofocus: widget.autofocus,
+                    startRecording: widget.startRecording,
+                    stopRecording: widget.stopRecording,
                   ),
                 ],
               ),
@@ -281,48 +289,11 @@ class _LlmChatViewState extends State<LlmChatView>
     });
   }
 
-  Future<void> _onTranslateStt(XFile file) async {
-    _initialMessage = null;
-    _associatedResponse = null;
-
-    // use the LLM to translate the attached audio to text
-    const prompt =
-        '将附加的音频翻译成文本；仅提供翻译结果的文本内容。请注意区分背景音频和前景音频，'
-        '只提供前景音频的翻译结果。';
-    final attachments = [await FileAttachment.fromFile(file)];
-
-    var response = '';
-    _pendingSttResponse = LlmResponse(
-      stream: widget.viewModel.provider.generateStream(
-        prompt,
-        attachments: attachments,
-      ),
-      onUpdate: (text) => response += text,
-      onDone: (error) async => _onSttDone(error, response, file),
-    );
-
-    setState(() {});
-  }
-
-  Future<void> _onSttDone(
-    LlmException? error,
-    String response,
-    XFile file,
-  ) async {
-    assert(_pendingSttResponse != null);
+  Future<void> onSttDone(String text) async {
     setState(() {
-      _initialMessage = ChatMessage.user(response, []);
-      _pendingSttResponse = null;
+      _initialMessage = ChatMessage.user(text, []);
     });
-
-    // delete the file now that the LLM has translated it
-    unawaited(ph.deleteFile(file));
-
-    // show any error that occurred
-    unawaited(_showLlmException(error));
   }
-
-  void _onCancelStt() => _pendingSttResponse?.cancel();
 
   Future<void> _showLlmException(LlmException? error) async {
     if (error == null) return;
