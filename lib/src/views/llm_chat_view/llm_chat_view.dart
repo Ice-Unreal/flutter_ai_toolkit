@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../chat_view_model/chat_view_model.dart';
@@ -12,7 +11,6 @@ import '../../chat_view_model/chat_view_model_provider.dart';
 import '../../dialogs/adaptive_dialog.dart';
 import '../../dialogs/adaptive_snack_bar/adaptive_snack_bar.dart';
 import '../../llm_exception.dart';
-import '../../platform_helper/platform_helper.dart' as ph;
 import '../../providers/interface/attachments.dart';
 import '../../providers/interface/chat_message.dart';
 import '../../providers/interface/llm_provider.dart';
@@ -81,6 +79,7 @@ class LlmChatView extends StatefulWidget {
   ///   Defaults to "以上输出由AI生成，仅供参考。"
   /// - [startRecording]: Optional callback function triggered when recording starts.
   /// - [stopRecording]: Optional callback function triggered when recording stops.
+  /// - [inputTextController]: Optional. The text controller for the input field. If not provided, a new one will be created.
   LlmChatView({
     required LlmProvider provider,
     LlmChatViewStyle? style,
@@ -96,6 +95,7 @@ class LlmChatView extends StatefulWidget {
     String aiDescription = "以上输出由AI生成，仅供参考。",
     this.startRecording,
     this.stopRecording,
+    this.inputTextController,
     super.key,
   }) : viewModel = ChatViewModel(
          provider: provider,
@@ -117,6 +117,9 @@ class LlmChatView extends StatefulWidget {
   ///
   /// Defaults to true.
   final bool autofocus;
+
+  /// The text controller for the input field. If not provided, a new one will be created.
+  final TextEditingController? inputTextController;
 
   /// The view model containing the chat state and configuration.
   ///
@@ -228,6 +231,7 @@ class _LlmChatViewState extends State<LlmChatView>
                     autofocus: widget.autofocus,
                     startRecording: widget.startRecording,
                     stopRecording: widget.stopRecording,
+                    inputTextController: widget.inputTextController,
                   ),
                 ],
               ),
@@ -286,12 +290,6 @@ class _LlmChatViewState extends State<LlmChatView>
     setState(() {
       _initialMessage = userMessage;
       _associatedResponse = llmMessage;
-    });
-  }
-
-  Future<void> onSttDone(String text) async {
-    setState(() {
-      _initialMessage = ChatMessage.user(text, []);
     });
   }
 

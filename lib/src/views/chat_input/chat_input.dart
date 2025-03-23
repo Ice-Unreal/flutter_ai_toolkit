@@ -28,6 +28,8 @@ class ChatInput extends StatefulWidget {
   ///
   /// [initialMessage] can be provided to pre-populate the input field.
   ///
+  /// [inputTextController] can be provided to control the text input externally.
+  ///
   /// [onCancelMessage] and [onCancelStt] are optional callbacks for cancelling
   /// message submission or speech-to-text translation respectively.
   ///
@@ -40,6 +42,7 @@ class ChatInput extends StatefulWidget {
   const ChatInput({
     required this.onSendMessage,
     this.initialMessage,
+    this.inputTextController,
     this.onCancelEdit,
     this.onCancelMessage,
     this.startRecording,
@@ -59,6 +62,9 @@ class ChatInput extends StatefulWidget {
 
   /// The initial message to populate the input field, if any.
   final ChatMessage? initialMessage;
+
+  /// The text controller for the input field. If not provided, a new one will be created.
+  final TextEditingController? inputTextController;
 
   /// Whether the input field should automatically focus when the chat input is created.
   ///
@@ -108,18 +114,26 @@ class _ChatInputState extends State<ChatInput> {
   //   submit/cancel button is because  clicking on another widget when the
   //   TextField is focused causes it to lose focus (as it should)
   final _focusNode = FocusNode();
-
-  final _textController = TextEditingController();
+  late final TextEditingController _textController;
   bool _isRecording = false;
   final _attachments = <Attachment>[];
   static const _minInputHeight = 48.0;
   static const _maxInputHeight = 144.0;
 
   @override
+  void initState() {
+    super.initState();
+    _textController = widget.inputTextController ?? TextEditingController();
+  }
+
+  @override
   void didUpdateWidget(covariant ChatInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialMessage != null) {
-      _textController.text = widget.initialMessage!.text ?? '';
+      final newText = widget.initialMessage!.text ?? '';
+      if (_textController.text != newText) {
+        _textController.text = newText;
+      }
       _attachments.clear();
       _attachments.addAll(widget.initialMessage!.attachments);
     }
@@ -127,7 +141,9 @@ class _ChatInputState extends State<ChatInput> {
 
   @override
   void dispose() {
-    _textController.dispose();
+    if (widget.inputTextController == null) {
+      _textController.dispose();
+    }
     _focusNode.dispose();
     super.dispose();
   }
