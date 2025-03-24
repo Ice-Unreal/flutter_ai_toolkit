@@ -48,12 +48,12 @@ class AdaptiveCopyText extends StatelessWidget {
       entries: [
         if (onEdit != null)
           MenuItem(
-            label: 'Edit',
+            label: '修改',
             icon: chatStyle.editButtonStyle!.icon,
             onSelected: onEdit,
           ),
         MenuItem(
-          label: 'Copy',
+          label: '复制',
           icon: chatStyle.copyButtonStyle!.icon,
           onSelected: () => unawaited(copyToClipboard(context, clipboardText)),
         ),
