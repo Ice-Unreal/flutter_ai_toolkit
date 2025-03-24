@@ -300,8 +300,10 @@ class _ChatInputState extends State<ChatInput> {
 
   Future<void> _onStopRecording() async {
     try {
-      await widget.stopRecording?.call();
+      // 停止录音的时候，先把状态改掉。
+      // 因为stopRecording方法可能要等一会儿才能返回，不能干等着，否则用户会以为点击停止没有反应呢。
       setState(() => _isRecording = false);
+      await widget.stopRecording?.call();
     } catch (e) {
       setState(() => _isRecording = false);
       rethrow;
