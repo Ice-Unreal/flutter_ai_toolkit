@@ -43,12 +43,12 @@ class _ChatHistoryViewState extends State<ChatHistoryView> {
     child: ChatViewModelClient(
       builder: (context, viewModel, child) {
         final history = [
-          if (viewModel.welcomeMessage != null)
-            ChatMessage(
-              origin: MessageOrigin.llm,
-              text: viewModel.welcomeMessage,
-              attachments: [],
-            ),
+          // if (viewModel.welcomeMessage != null)
+          //   ChatMessage(
+          //     origin: MessageOrigin.llm,
+          //     text: viewModel.welcomeMessage,
+          //     attachments: [],
+          //   ),
           ...viewModel.provider.history,
         ];
 

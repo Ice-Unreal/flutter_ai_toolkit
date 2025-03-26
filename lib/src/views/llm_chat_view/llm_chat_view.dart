@@ -17,9 +17,9 @@ import '../../providers/interface/llm_provider.dart';
 import '../../styles/llm_chat_view_style.dart';
 import '../chat_history_view.dart';
 import '../chat_input/chat_input.dart';
-import '../chat_input/chat_suggestion_view.dart';
 import '../response_builder.dart';
 import 'llm_response.dart';
+import 'welcome_view.dart';
 
 /// A widget that displays a chat interface for interacting with an LLM
 /// (Language Model).
@@ -207,14 +207,11 @@ class _LlmChatViewState extends State<LlmChatView>
                                   ? _onEditMessage
                                   : null,
                         ),
-                        if (widget.suggestions.isNotEmpty &&
-                            widget.viewModel.provider.history.isEmpty)
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: ChatSuggestionsView(
-                              suggestions: widget.suggestions,
-                              onSelectSuggestion: _onSelectSuggestion,
-                            ),
+                        if (widget.viewModel.provider.history.isEmpty)
+                          WelcomeView(
+                            suggestions: widget.suggestions,
+                            onSelectSuggestion: _onSelectSuggestion,
+                            welcomeMessage: widget.viewModel.welcomeMessage,
                           ),
                       ],
                     ),

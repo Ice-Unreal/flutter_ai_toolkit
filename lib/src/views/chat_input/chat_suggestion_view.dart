@@ -33,7 +33,8 @@ class ChatSuggestionsView extends StatelessWidget {
       final suggestionStyle = SuggestionStyle.resolve(
         viewModel.style?.suggestionStyle,
       );
-      return Wrap(
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           for (final suggestion in suggestions)
             GestureDetector(
