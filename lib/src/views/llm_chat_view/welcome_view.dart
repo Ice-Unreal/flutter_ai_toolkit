@@ -36,24 +36,26 @@ class WelcomeView extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (welcomeMessage != null) ...[
-                MarkdownBody(
-                  data: welcomeMessage!,
-                  selectable: false,
-                  styleSheet: llmStyle.markdownStyle,
-                ),
-                const SizedBox(height: 24),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (welcomeMessage != null) ...[
+                  MarkdownBody(
+                    data: welcomeMessage!,
+                    selectable: false,
+                    styleSheet: llmStyle.markdownStyle,
+                  ),
+                  const SizedBox(height: 24),
+                ],
+                if (suggestions.isNotEmpty)
+                  ChatSuggestionsView(
+                    suggestions: suggestions,
+                    onSelectSuggestion: onSelectSuggestion ?? (_) {},
+                  ),
               ],
-              if (suggestions.isNotEmpty)
-                ChatSuggestionsView(
-                  suggestions: suggestions,
-                  onSelectSuggestion: onSelectSuggestion ?? (_) {},
-                ),
-            ],
+            ),
           ),
         ),
       );
