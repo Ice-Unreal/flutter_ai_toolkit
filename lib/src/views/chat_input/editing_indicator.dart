@@ -38,7 +38,7 @@ class EditingIndicator extends StatelessWidget {
       spacing: 6,
       children: [
         Text(
-          'Editing',
+          '正在修改',
           style: ToolkitTextStyles.label.copyWith(
             color: invertColor(cancelButtonStyle.iconColor),
           ),

@@ -350,6 +350,9 @@ class _LlmChatViewState extends State<LlmChatView>
     history.addAll([_initialMessage!, _associatedResponse!]);
     widget.viewModel.provider.history = history;
 
+    // 清空输入框内容
+    widget.inputTextController?.clear();
+
     setState(() {
       _initialMessage = null;
       _associatedResponse = null;
